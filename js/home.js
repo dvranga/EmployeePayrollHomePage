@@ -1,8 +1,20 @@
+let empPayrollList;
+
+
 window.addEventListener('DOMContentLoaded',(event)=>{
+    empPayrollList=getEmployeePayrollDataFromStorage();
+    document.querySelector(".emp-count").textContent=empPayrollList.length;
     createInnerHtml();
+    localStorage.removeItem('editEmp');
 });
 
+const getEmployeePayrollDataFromStorage=()=>{
+    return localStorage.getItem('EmployeePayrollList')?
+    JSON.parse(localStorage.getItem('EmployeePayrollList')):[];
+}
+
 const createInnerHtml=()=>{
+    if(empPayrollList.length==0) return;
     const headerHtml=
     `<tr>
     <th></th>
@@ -14,7 +26,6 @@ const createInnerHtml=()=>{
     <th>Actions</th>
     </tr>`;
     let innerHtml=`${headerHtml}`;
-    let empPayrollList=createEmployeePayrollJSON();
     for(const empPayrollData of empPayrollList){
         innerHtml=`${innerHtml}
     <tr>
@@ -44,36 +55,3 @@ const getDeptHtml=(deptList)=>{
     return deptHtml;
 }
 
-
-
-const createEmployeePayrollJSON=()=>{
-    let empPayrollListLocal=[
-        {
-            _name:'Ranganath Devangm',
-            _gender:'male',
-            _department:[
-                'Engineering',
-                'Finance'
-            ],
-            _salary:'500000',
-            _startDate:'29 Oct 2019',
-            _note:'',
-            _id:new Date().getTime(),
-            _profilePic:'../assets/profile-images/Ellipse -2.png',
-        },
-        {
-            _name:'Harinath Devangm',
-            _gender:'male',
-            _department:[
-                'Engineering',
-                'Sales'
-            ],
-            _salary:'500000',
-            _startDate:'29 Oct 2019',
-            _note:'',
-            _id:new Date().getTime(),
-            _profilePic:'../assets/profile-images/Ellipse -3.png',
-        }
-    ];
-    return empPayrollListLocal;
-}
